@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 import { Shield, Award, Users, TrendingUp, Star, CheckCircle, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/SectionHeading";
 import { usePageContent } from "@/hooks/usePageContent";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { useProductStore } from "@/store/useProductStore";
 import heroImg from "@/assets/hero-pharma.jpg";
 
 const defaultWhyUs = [
@@ -30,32 +30,17 @@ const whyUsIcons = [Shield, Award, Users, TrendingUp];
 
 const Index = () => {
   const { data: content } = usePageContent("home");
+  const { products: dbProducts, fetchProducts } = useProductStore();
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
   const hero = (content?.hero as Record<string, any>) || {};
   const aboutShort = (content?.about_short as Record<string, any>) || {};
   const whyUs = (content?.why_us as Record<string, any>) || {};
   const testimonials = (content?.testimonials as Record<string, any>) || {};
   const cta = (content?.cta as Record<string, any>) || {};
-
-  const { data: dbProducts } = useQuery({
-    queryKey: ["featured-products"],
-    retry: 3,
-    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 10,
-    refetchOnMount: true,
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("products")
-        .select("*")
-        .eq("status", "active")
-        .order("sort_order", { ascending: true });
-      if (error) {
-        console.error("Failed to fetch featured products:", error);
-        throw error;
-      }
-      return data ?? [];
-    },
-  });
 
   const stats = Array.isArray(aboutShort.stats) && aboutShort.stats.length > 0 ? aboutShort.stats : defaultStats;
   const whyUsItems = Array.isArray(whyUs.items) && whyUs.items.length > 0 ? whyUs.items : defaultWhyUs;

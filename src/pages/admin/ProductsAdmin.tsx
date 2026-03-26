@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useProductStore } from "@/store/useProductStore";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -41,24 +41,23 @@ const ProductsAdmin = () => {
   const [form, setForm] = useState<ProductForm>(emptyForm);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
-  const queryClient = useQueryClient();
+  const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
 
-  const { data: products, isLoading, error: fetchError } = useQuery({
-    queryKey: ["admin-products"],
-    retry: 2,
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("products")
-        .select("*")
-        .order("sort_order", { ascending: true });
-      if (error) {
-        console.error("Admin products fetch error:", error);
-        throw error;
-      }
-      return data || [];
-    },
-  });
+  const { 
+    adminProducts: products, 
+    isAdminLoading: isLoading, 
+    isError, 
+    errorMessage, 
+    fetchAdminProducts,
+    addProduct,
+    updateProduct,
+    deleteProduct
+  } = useProductStore();
+
+  useEffect(() => {
+    fetchAdminProducts();
+  }, []);
 
   const uploadImage = async (file: File): Promise<string> => {
     const ext = file.name.split(".").pop();
@@ -69,15 +68,9 @@ const ProductsAdmin = () => {
     return data.publicUrl;
   };
 
-  const handleImageSelect = (file: File) => {
-    setImageFile(file);
-    const reader = new FileReader();
-    reader.onload = (e) => setImagePreview(e.target?.result as string);
-    reader.readAsDataURL(file);
-  };
-
-  const saveMutation = useMutation({
-    mutationFn: async () => {
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
       let imageUrl: string | undefined;
       if (imageFile) {
         imageUrl = await uploadImage(imageFile);
@@ -92,50 +85,36 @@ const ProductsAdmin = () => {
         description: form.description,
         benefits: form.benefits.split("\n").filter(Boolean),
         status: form.status,
-        ...(imageUrl ? { image_url: imageUrl } : editingId ? {} : {}),
+        ...(imageUrl ? { image_url: imageUrl } : {}),
       };
 
       if (editingId) {
-        const { error } = await supabase.from("products").update(payload).eq("id", editingId);
-        if (error) throw error;
+        await updateProduct(editingId, payload);
       } else {
-        const { error } = await supabase.from("products").insert(payload);
-        if (error) throw error;
+        await addProduct(payload);
       }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["admin-products"] });
-      queryClient.invalidateQueries({ queryKey: ["public-products"] });
-      queryClient.invalidateQueries({ queryKey: ["featured-products"] });
+
       setDialogOpen(false);
       setEditingId(null);
       setForm(emptyForm);
       setImageFile(null);
       setImagePreview("");
-      toast({ title: editingId ? "Product Updated ✅" : "Product Added ✅", description: "Changes are now live on the website." });
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["admin-products"] });
-      queryClient.invalidateQueries({ queryKey: ["public-products"] });
-      queryClient.invalidateQueries({ queryKey: ["featured-products"] });
-    },
-    onError: (err: Error) => {
+      toast({ title: editingId ? "Product Updated ✅" : "Product Added ✅" });
+    } catch (err: any) {
       toast({ title: "Error", description: err.message, variant: "destructive" });
-    },
-  });
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
-  const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from("products").delete().eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["admin-products"] });
-      queryClient.invalidateQueries({ queryKey: ["public-products"] });
-      queryClient.invalidateQueries({ queryKey: ["featured-products"] });
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteProduct(id);
       toast({ title: "Product Deleted ✅" });
-    },
-  });
+    } catch (err: any) {
+      toast({ title: "Error", description: err.message, variant: "destructive" });
+    }
+  };
 
   const openEdit = (product: any) => {
     setEditingId(product.id);
@@ -163,6 +142,13 @@ const ProductsAdmin = () => {
     setDialogOpen(true);
   };
 
+  const handleImageSelect = (file: File) => {
+    setImageFile(file);
+    const reader = new FileReader();
+    reader.onload = (e) => setImagePreview(e.target?.result as string);
+    reader.readAsDataURL(file);
+  };
+
   const currentPreviewImage = imagePreview || form.existingImageUrl;
 
   return (
@@ -182,10 +168,10 @@ const ProductsAdmin = () => {
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-secondary mx-auto mb-3" />
           <p className="text-muted-foreground">Loading products...</p>
         </div>
-      ) : fetchError ? (
+      ) : isError ? (
         <div className="text-center py-16 text-destructive">
           <p className="text-lg font-medium">Failed to load products</p>
-          <p className="text-sm">{fetchError.message}</p>
+          <p className="text-sm">{errorMessage}</p>
         </div>
       ) : !products?.length ? (
         <div className="text-center py-16 text-muted-foreground">
@@ -228,7 +214,7 @@ const ProductsAdmin = () => {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={() => deleteMutation.mutate(p.id)}>Delete</AlertDialogAction>
+                      <AlertDialogAction onClick={() => handleDelete(p.id)}>Delete</AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
@@ -246,7 +232,7 @@ const ProductsAdmin = () => {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              saveMutation.mutate();
+              handleSave();
             }}
             className="space-y-4"
           >
@@ -320,8 +306,8 @@ const ProductsAdmin = () => {
                 />
               </label>
             </div>
-            <Button type="submit" className="w-full bg-gradient-accent font-semibold" size="lg" disabled={saveMutation.isPending}>
-              {saveMutation.isPending ? "Saving..." : editingId ? "Update Product" : "Add Product"}
+            <Button type="submit" className="w-full bg-gradient-accent font-semibold" size="lg" disabled={isSaving}>
+              {isSaving ? "Saving..." : editingId ? "Update Product" : "Add Product"}
             </Button>
           </form>
         </DialogContent>

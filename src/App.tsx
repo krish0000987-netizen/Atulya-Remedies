@@ -69,12 +69,27 @@ const PublicLayout = ({ children }: { children: React.ReactNode }) => (
   </>
 );
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <AuthProvider>
+import { useEffect } from "react";
+import { useSiteStore } from "@/store/useSiteStore";
+import { useProductStore } from "@/store/useProductStore";
+
+const App = () => {
+  const { fetchSettings, fetchPageContent } = useSiteStore();
+  const { fetchProducts } = useProductStore();
+
+  useEffect(() => {
+    // Global pre-fetch for the best user experience
+    fetchSettings();
+    fetchPageContent("home");
+    fetchProducts();
+  }, []);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <AuthProvider>
         <BrowserRouter>
           <Routes>
             {/* Public routes */}

@@ -1,31 +1,22 @@
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/SectionHeading";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { useProductStore } from "@/store/useProductStore";
 import { openWhatsApp } from "@/lib/whatsapp";
 import { AlertCircle, RefreshCw } from "lucide-react";
 
 const Products = () => {
-  const { data: products, isLoading, isError, error, refetch } = useQuery({
-    queryKey: ["public-products"],
-    retry: 3,
-    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 10,
-    refetchOnMount: true,
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("products")
-        .select("*")
-        .eq("status", "active")
-        .order("sort_order", { ascending: true });
-      if (error) {
-        console.error("Failed to fetch products:", error);
-        throw error;
-      }
-      return data ?? [];
-    },
-  });
+  const { 
+    products, 
+    isLoading, 
+    isError, 
+    errorMessage, 
+    fetchProducts 
+  } = useProductStore();
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   return (
     <section className="py-16 md:py-24 bg-background">
@@ -41,10 +32,10 @@ const Products = () => {
           <div className="text-center py-12">
             <AlertCircle className="w-10 h-10 text-destructive mx-auto mb-3" />
             <p className="text-muted-foreground mb-2">Failed to load products. Please try again.</p>
-            <p className="text-xs text-muted-foreground/70 mb-4">{(error as Error)?.message}</p>
+            <p className="text-xs text-muted-foreground/70 mb-4">{errorMessage}</p>
             <Button
               variant="outline"
-              onClick={() => refetch()}
+              onClick={() => fetchProducts(true)}
               className="gap-2"
             >
               <RefreshCw className="w-4 h-4" /> Retry
