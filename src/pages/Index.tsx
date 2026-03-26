@@ -294,19 +294,19 @@ const Index = () => {
                 title: "Innovation in Cardiac Care", 
                 category: "Research", 
                 date: "Oct 12, 2024", 
-                image: "/Users/himanshu/.gemini/antigravity/brain/9a4d64e6-3e6e-46bf-a25b-e92a2d2c4ada/cardiac_research_insight_1774534424324.png" 
+                image: "/assets/cardiac-insight.png" 
               },
               { 
                 title: "Expansion into South India", 
                 category: "News", 
                 date: "Sep 28, 2024", 
-                image: "/Users/himanshu/.gemini/antigravity/brain/9a4d64e6-3e6e-46bf-a25b-e92a2d2c4ada/corporate_expansion_insight_1774534442986.png" 
+                image: "/assets/corporate-insight.png" 
               },
               { 
                 title: "Importance of Pure Nutraceuticals", 
                 category: "Wellness", 
                 date: "Sep 15, 2024", 
-                image: "/Users/himanshu/.gemini/antigravity/brain/9a4d64e6-3e6e-46bf-a25b-e92a2d2c4ada/nutraceutical_wellness_insight_1774534465814.png" 
+                image: "/assets/wellness-insight.png" 
               }
             ].map((post, i) => (
               <div key={i} className="group cursor-pointer">
