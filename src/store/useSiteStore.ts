@@ -16,6 +16,7 @@ interface SiteStore {
   
   fetchSettings: () => Promise<void>;
   fetchPageContent: (page: string) => Promise<void>;
+  updatePageContent: (page: string, sectionData: Record<string, any>) => Promise<void>;
 }
 
 export const useSiteStore = create<SiteStore>((set, get) => ({
@@ -41,8 +42,7 @@ export const useSiteStore = create<SiteStore>((set, get) => ({
   },
 
   fetchPageContent: async (page: string) => {
-    if (get().pageContent[page]) return;
-
+    // We fetch even if exists if we want to ensure fresh data on explicit request
     set({ isLoading: true });
     try {
       const { data, error } = await supabase
@@ -63,6 +63,29 @@ export const useSiteStore = create<SiteStore>((set, get) => ({
       }));
     } catch (err) {
       console.error(`Failed to fetch content for ${page}:`, err);
+      set({ isLoading: false });
+    }
+  },
+
+  updatePageContent: async (page: string, sectionData: Record<string, any>) => {
+    set({ isLoading: true });
+    try {
+      for (const [section, content] of Object.entries(sectionData)) {
+        const { error } = await supabase
+          .from("page_content")
+          .upsert(
+            { page, section, content },
+            { onConflict: "page,section" }
+          );
+        if (error) throw error;
+      }
+      
+      // Refresh local state
+      await get().fetchPageContent(page);
+    } catch (err) {
+      console.error(`Failed to update content for ${page}:`, err);
+      throw err;
+    } finally {
       set({ isLoading: false });
     }
   }

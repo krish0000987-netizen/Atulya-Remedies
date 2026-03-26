@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Shield, Award, Users, TrendingUp, Star, CheckCircle, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SectionHeading from "@/components/SectionHeading";
-import { usePageContent } from "@/hooks/usePageContent";
+import { useSiteStore } from "@/store/useSiteStore";
 import { useProductStore } from "@/store/useProductStore";
 import heroImg from "@/assets/hero-pharma.jpg";
 
@@ -29,18 +29,20 @@ const defaultStats = [
 const whyUsIcons = [Shield, Award, Users, TrendingUp];
 
 const Index = () => {
-  const { data: content } = usePageContent("home");
+  const { pageContent, fetchPageContent } = useSiteStore();
   const { products: dbProducts, fetchProducts } = useProductStore();
 
   useEffect(() => {
     fetchProducts();
+    fetchPageContent("home");
   }, []);
 
-  const hero = (content?.hero as Record<string, any>) || {};
-  const aboutShort = (content?.about_short as Record<string, any>) || {};
-  const whyUs = (content?.why_us as Record<string, any>) || {};
-  const testimonials = (content?.testimonials as Record<string, any>) || {};
-  const cta = (content?.cta as Record<string, any>) || {};
+  const content = pageContent["home"] || {};
+  const hero = (content.hero as Record<string, any>) || {};
+  const aboutShort = (content.about_short as Record<string, any>) || {};
+  const whyUs = (content.why_us as Record<string, any>) || {};
+  const testimonials = (content.testimonials as Record<string, any>) || {};
+  const cta = (content.cta as Record<string, any>) || {};
 
   const stats = Array.isArray(aboutShort.stats) && aboutShort.stats.length > 0 ? aboutShort.stats : defaultStats;
   const whyUsItems = Array.isArray(whyUs.items) && whyUs.items.length > 0 ? whyUs.items : defaultWhyUs;

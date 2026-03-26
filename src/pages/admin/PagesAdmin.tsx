@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useSiteStore } from "@/store/useSiteStore";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -406,66 +406,55 @@ const pageConfigs: Record<string, { label: string; sections: { key: string; labe
   },
 };
 
+// ... (helpers)
+
+// ... (helpers remain same)
+
 const PagesAdmin = () => {
   const [activePage, setActivePage] = useState("home");
   const [sectionData, setSectionData] = useState<Record<string, Record<string, any>>>({});
   const [hasUnsaved, setHasUnsaved] = useState(false);
-  const queryClient = useQueryClient();
+  const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
 
-  const { data: pageContent, isLoading } = useQuery({
-    queryKey: ["admin-page-content", activePage],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("page_content")
-        .select("*")
-        .eq("page", activePage);
-      if (error) throw error;
-      return data;
-    },
-  });
+  const { pageContent, fetchPageContent, updatePageContent, isLoading } = useSiteStore();
 
   useEffect(() => {
-    if (pageContent) {
+    fetchPageContent(activePage);
+  }, [activePage]);
+
+  useEffect(() => {
+    const rawContent = pageContent[activePage];
+    if (rawContent) {
       const map: Record<string, Record<string, any>> = {};
-      pageContent.forEach((row) => {
-        const content = (row.content as Record<string, any>) || {};
-        // Migration: if old single image_url exists for certifications, convert to array
-        if (activePage === "certifications" && row.section === "main") {
-          if (content.image_url && !content.certificate_images) {
-            content.certificate_images = [content.image_url];
-            delete content.image_url;
+      Object.entries(rawContent).forEach(([section, content]) => {
+        const payload = { ...(content as Record<string, any>) };
+        // Migration logic
+        if (activePage === "certifications" && section === "main") {
+          if (payload.image_url && !payload.certificate_images) {
+            payload.certificate_images = [payload.image_url];
+            delete payload.image_url;
           }
         }
-        map[row.section] = content;
+        map[section] = payload;
       });
       setSectionData(map);
       setHasUnsaved(false);
     }
   }, [pageContent, activePage]);
 
-  const saveMutation = useMutation({
-    mutationFn: async () => {
-      for (const [section, content] of Object.entries(sectionData)) {
-        const { error } = await supabase
-          .from("page_content")
-          .upsert(
-            { page: activePage, section, content: content as Json },
-            { onConflict: "page,section" }
-          );
-        if (error) throw error;
-      }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["admin-page-content", activePage] });
-      queryClient.invalidateQueries({ queryKey: ["page-content", activePage] });
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      await updatePageContent(activePage, sectionData);
       setHasUnsaved(false);
       toast({ title: "Updated Successfully ✅", description: "Your changes are now live on the website." });
-    },
-    onError: (err: Error) => {
+    } catch (err: any) {
       toast({ title: "Error", description: err.message, variant: "destructive" });
-    },
-  });
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   const updateField = (section: string, key: string, value: any) => {
     setSectionData((prev) => ({
@@ -485,12 +474,12 @@ const PagesAdmin = () => {
           <p className="text-sm text-muted-foreground mt-1">Edit any text, image, or section on your website</p>
         </div>
         <Button
-          onClick={() => saveMutation.mutate()}
-          disabled={saveMutation.isPending || !hasUnsaved}
+          onClick={handleSave}
+          disabled={isSaving || !hasUnsaved}
           size="lg"
           className="bg-gradient-accent font-semibold gap-2"
         >
-          {saveMutation.isPending ? (
+          {isSaving ? (
             <>Saving...</>
           ) : hasUnsaved ? (
             <><Save className="w-4 h-4" /> Save Changes</>
