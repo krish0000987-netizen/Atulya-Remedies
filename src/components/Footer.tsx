@@ -15,10 +15,14 @@ const Footer = () => (
     <div className="container py-12 md:py-16">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <div>
-          <img src={logoImg} alt="Atulya Remedies Pvt Ltd" className="h-14 w-auto mb-1" />
-          <p className="text-secondary text-[10px] font-medium italic mb-3 ml-1">
-            "Medicine is our business, Your health is our mission"
-          </p>
+          <div className="flex flex-col items-start mb-4">
+            <img src={logoImg} alt="Atulya Remedies Pvt Ltd" className="h-14 w-auto mb-1" />
+            <div className="w-full max-w-[200px] mt-1 ml-1 pt-1 border-t border-secondary/20">
+              <p className="text-secondary text-[10px] font-semibold italic">
+                "Medicine is our business, Your health is our mission"
+              </p>
+            </div>
+          </div>
           <p className="text-primary-foreground/70 text-sm leading-relaxed mb-4">
             WHO-GMP & ISO 9001:2015 certified pharmaceutical company providing quality healthcare products across India.
           </p>
@@ -37,6 +41,7 @@ const Footer = () => (
             {[
               { label: "About Us", to: "/about" },
               { label: "Products", to: "/products" },
+              { label: "Gallery", to: "/gallery" },
               { label: "Certifications", to: "/certifications" },
               { label: "Contact", to: "/contact" },
             ].map((l) => (

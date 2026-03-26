@@ -47,7 +47,7 @@ const Contact = () => {
   };
 
   const contacts = [
-    { icon: Phone, label: "Phone (Primary)", value: settings?.phone_primary || "+91 76975 55159", href: `tel:${(settings?.phone_primary || "+917697555159").replace(/\s/g, "")}` },
+    { icon: Phone, label: "Phone ", value: settings?.phone_primary || "+91 76975 55159", href: `tel:${(settings?.phone_primary || "+917697555159").replace(/\s/g, "")}` },
     { icon: Phone, label: "Phone", value: settings?.phone_alt1 || "+91 88780 36772", href: `tel:${(settings?.phone_alt1 || "+918878036772").replace(/\s/g, "")}` },
     { icon: Phone, label: "Phone", value: settings?.phone_alt2 || "+91 76975 11159", href: `tel:${(settings?.phone_alt2 || "+917697511159").replace(/\s/g, "")}` },
     { icon: Mail, label: "Email", value: settings?.email1 || "atulyaremedies@gmail.com", href: `mailto:${settings?.email1 || "atulyaremedies@gmail.com"}` },

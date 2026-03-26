@@ -10,6 +10,7 @@ import SectionHeading from "@/components/SectionHeading";
 import { useSiteStore } from "@/store/useSiteStore";
 import { useProductStore } from "@/store/useProductStore";
 import heroImg from "@/assets/hero-pharma.jpg";
+import GallerySection from "@/components/GallerySection";
 
 const defaultWhyUs = [
   { title: "WHO-GMP Certified", desc: "Products meeting strict international quality standards." },
@@ -19,7 +20,7 @@ const defaultWhyUs = [
 ];
 
 const categories = [
-  { name: "Cardiac & Diabetic", icon: HeartPulse, color: "text-red-500", bg: "bg-red-500/10" },
+  { name: "Dermatologist & Cosmetologist", icon: HeartPulse, color: "text-red-500", bg: "bg-red-500/10" },
   { name: "Antibiotics & Anti-infectives", icon: Beaker, color: "text-blue-500", bg: "bg-blue-500/10" },
   { name: "Nutraceuticals", icon: Zap, color: "text-yellow-500", bg: "bg-yellow-500/10" },
   { name: "Analgesics & NSAIDs", icon: Activity, color: "text-green-500", bg: "bg-green-500/10" },
@@ -238,6 +239,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Gallery Section */}
+      <GallerySection />
 
       {/* Featured Products (Refined) */}
       {dbProducts && dbProducts.length > 0 && (

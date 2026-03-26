@@ -19,6 +19,7 @@ const About = lazy(() => import("./pages/About"));
 const Products = lazy(() => import("./pages/Products"));
 const Certifications = lazy(() => import("./pages/Certifications"));
 const Contact = lazy(() => import("./pages/Contact"));
+const Gallery = lazy(() => import("./pages/Gallery"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Code-split admin sub-pages (loaded after admin shell is ready)
@@ -28,6 +29,7 @@ const ProductsAdmin = lazy(() => import("./pages/admin/ProductsAdmin"));
 const MediaAdmin = lazy(() => import("./pages/admin/MediaAdmin"));
 const InquiriesAdmin = lazy(() => import("./pages/admin/InquiriesAdmin"));
 const SettingsAdmin = lazy(() => import("./pages/admin/SettingsAdmin"));
+const GalleryAdmin = lazy(() => import("./pages/admin/GalleryAdmin"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -103,6 +105,7 @@ const App = () => {
             <Route path="/products" element={<Suspense fallback={<PageLoader />}><PublicLayout><Products /></PublicLayout></Suspense>} />
             <Route path="/certifications" element={<Suspense fallback={<PageLoader />}><PublicLayout><Certifications /></PublicLayout></Suspense>} />
             <Route path="/contact" element={<Suspense fallback={<PageLoader />}><PublicLayout><Contact /></PublicLayout></Suspense>} />
+            <Route path="/gallery" element={<Suspense fallback={<PageLoader />}><PublicLayout><Gallery /></PublicLayout></Suspense>} />
 
             {/* Admin routes - AdminLogin and AdminLayout load eagerly */}
             <Route path="/admin/login" element={<AdminLogin />} />
@@ -113,6 +116,7 @@ const App = () => {
               <Route path="media" element={<Suspense fallback={<AdminPageLoader />}><MediaAdmin /></Suspense>} />
               <Route path="inquiries" element={<Suspense fallback={<AdminPageLoader />}><InquiriesAdmin /></Suspense>} />
               <Route path="settings" element={<Suspense fallback={<AdminPageLoader />}><SettingsAdmin /></Suspense>} />
+              <Route path="gallery" element={<Suspense fallback={<AdminPageLoader />}><GalleryAdmin /></Suspense>} />
             </Route>
 
             <Route path="*" element={<Suspense fallback={<PageLoader />}><PublicLayout><NotFound /></PublicLayout></Suspense>} />

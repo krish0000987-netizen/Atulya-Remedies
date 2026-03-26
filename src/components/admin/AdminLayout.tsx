@@ -9,7 +9,8 @@ const navItems = [
   { label: "Dashboard", to: "/admin", icon: LayoutDashboard },
   { label: "Pages", to: "/admin/pages", icon: FileText },
   { label: "Products", to: "/admin/products", icon: Package },
-  { label: "Media", to: "/admin/media", icon: Image },
+  { label: "Gallery", to: "/admin/gallery", icon: Image },
+  { label: "Media", to: "/admin/media", icon: FileText },
   { label: "Inquiries", to: "/admin/inquiries", icon: MessageSquare },
   { label: "Settings", to: "/admin/settings", icon: Settings },
 ];

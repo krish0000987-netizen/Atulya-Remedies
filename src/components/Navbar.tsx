@@ -8,6 +8,7 @@ const navLinks = [
   { label: "Home", to: "/" },
   { label: "About", to: "/about" },
   { label: "Products", to: "/products" },
+  { label: "Gallery", to: "/gallery" },
   { label: "Certifications", to: "/certifications" },
   { label: "Contact", to: "/contact" },
 ];
@@ -19,15 +20,18 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-md border-b border-border">
       <div className="container flex items-center justify-between h-16 md:h-20">
-        <Link to="/" className="flex flex-col items-start gap-0">
+        <Link to="/" className="flex flex-col items-start group">
           <img
             src={logoImg}
             alt="Atulya Remedies Pvt Ltd"
-            className="h-10 md:h-14 w-auto object-contain"
+            className="h-10 md:h-14 w-auto object-contain transition-transform group-hover:scale-[1.02]"
           />
-          <span className="hidden sm:block text-[8px] md:text-[10px] text-muted-foreground font-medium italic -mt-1 ml-1 leading-none tracking-tight">
-            "Medicine is our business, Your health is our mission"
-          </span>
+          <div className="w-full max-w-[120px] md:max-w-[170px] mt-0.5 ml-1">
+            <div className="h-px bg-secondary/30 w-full mb-1" />
+            <span className="hidden sm:block text-[7px] md:text-[9px] text-muted-foreground font-semibold italic leading-none tracking-tight">
+              "Medicine is our business, Your health is our mission"
+            </span>
+          </div>
         </Link>
 
         {/* Desktop nav */}
