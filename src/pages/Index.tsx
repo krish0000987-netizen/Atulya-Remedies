@@ -290,12 +290,28 @@ const Index = () => {
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { title: "Innovation in Cardiac Care", category: "Research", date: "Oct 12, 2024" },
-              { title: "Expansion into South India", category: "News", date: "Sep 28, 2024" },
-              { title: "Importance of Pure Nutraceuticals", category: "Wellness", date: "Sep 15, 2024" }
+              { 
+                title: "Innovation in Cardiac Care", 
+                category: "Research", 
+                date: "Oct 12, 2024", 
+                image: "/Users/himanshu/.gemini/antigravity/brain/9a4d64e6-3e6e-46bf-a25b-e92a2d2c4ada/cardiac_research_insight_1774534424324.png" 
+              },
+              { 
+                title: "Expansion into South India", 
+                category: "News", 
+                date: "Sep 28, 2024", 
+                image: "/Users/himanshu/.gemini/antigravity/brain/9a4d64e6-3e6e-46bf-a25b-e92a2d2c4ada/corporate_expansion_insight_1774534442986.png" 
+              },
+              { 
+                title: "Importance of Pure Nutraceuticals", 
+                category: "Wellness", 
+                date: "Sep 15, 2024", 
+                image: "/Users/himanshu/.gemini/antigravity/brain/9a4d64e6-3e6e-46bf-a25b-e92a2d2c4ada/nutraceutical_wellness_insight_1774534465814.png" 
+              }
             ].map((post, i) => (
               <div key={i} className="group cursor-pointer">
                 <div className="aspect-[16/10] rounded-2xl bg-muted overflow-hidden mb-6 relative">
+                  <img src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-secondary/5 group-hover:bg-secondary/15 transition-colors" />
                   <div className="absolute bottom-4 left-4 flex gap-2">
                     <span className="bg-card text-[10px] font-bold px-3 py-1 rounded-full">{post.category}</span>
@@ -303,66 +319,9 @@ const Index = () => {
                   </div>
                 </div>
                 <h4 className="text-xl font-bold group-hover:text-secondary transition-colors line-clamp-2">{post.title}</h4>
-                <p className="mt-2 text-sm text-muted-foreground">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <p className="mt-2 text-sm text-muted-foreground">Discover how our latest research and expansions are shaping the future of healthcare. Stay tuned for expert medical insights.</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials (Enhanced) */}
-      <section className="py-24 bg-muted/40 relative">
-        <div className="container relative z-10">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-4xl font-heading font-extrabold mb-4">Voices of Trust</h2>
-            <div className="w-20 h-1 bg-secondary mx-auto mb-6" />
-            <p className="text-muted-foreground italic text-lg">"Quality is not an act, it is a habit. We built Atulya on this philosophy."</p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {(testimonials.items || [
-              { name: "Dr. Sanjay Verma", role: "Cardiologist", text: "Quality is unmatched. Highly recommend for diabetic patients." },
-              { name: "Priya Malik", role: "Distributor", text: "The monopoly rights and marketing support allowed me to grow 2x in a year." },
-              { name: "Dr. Anish Das", role: "General Physician", text: "Efficacy of Yazyme is exactly what my patients needed." }
-            ]).map((t: any, idx: number) => (
-              <div key={idx} className="bg-card p-10 rounded-[2.5rem] shadow-card relative border border-transparent hover:border-secondary/10 transition-all group">
-                <div className="absolute top-0 right-10 -translate-y-1/2 w-12 h-12 bg-secondary flex items-center justify-center rounded-full text-white shadow-lg">
-                  <Star size={24} fill="currentColor" />
-                </div>
-                <p className="text-muted-foreground mb-8 text-lg font-light leading-relaxed italic">"{t.text}"</p>
-                <div>
-                  <div className="font-bold text-lg">{t.name}</div>
-                  <div className="text-xs text-secondary font-bold uppercase tracking-widest">{t.role}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA (Visual Refresh) */}
-      <section className="relative py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-primary z-0" />
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-secondary/10 to-transparent z-1" />
-        <div className="container relative z-10 text-center">
-          <div className="max-w-4xl mx-auto space-y-8">
-            <h2 className="text-4xl md:text-7xl font-bold text-white leading-tight">
-              Ready to <span className="text-secondary italic">Transform</span> Healthcare Together?
-            </h2>
-            <p className="text-white/60 text-lg md:text-xl max-w-2xl mx-auto font-light">
-              Whether you are a healthcare professional looking for efficacy or a distributor seeking growth, we have the solutions.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 pt-10">
-              <Link to="/products">
-                <Button size="lg" className="h-16 bg-white text-primary hover:bg-white/90 font-bold px-12 rounded-2xl text-lg shadow-2xl">
-                  {cta.button_text || "Explore Range"}
-                </Button>
-              </Link>
-              <Link to="/contact">
-                <Button size="lg" className="h-16 bg-secondary text-white hover:bg-secondary/90 font-bold px-12 rounded-2xl text-lg shadow-2xl">
-                  Contact Now
-                </Button>
-              </Link>
-            </div>
           </div>
         </div>
       </section>
