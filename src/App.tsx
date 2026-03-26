@@ -82,6 +82,11 @@ const App = () => {
     fetchSettings();
     fetchPageContent("home");
     fetchProducts();
+
+    // DEBUG HELPER (Check console for these logs)
+    console.log("🛠️ App initialized");
+    console.log("📡 Supabase URL:", import.meta.env.VITE_SUPABASE_URL ? "Exists ✅" : "MISSING ❌");
+    console.log("🏪 Store loading state:", { settings: "fetching", products: "fetching" });
   }, []);
 
   return (
