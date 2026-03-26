@@ -19,12 +19,15 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-md border-b border-border">
       <div className="container flex items-center justify-between h-16 md:h-20">
-        <Link to="/" className="flex items-center gap-2">
+        <Link to="/" className="flex flex-col items-start gap-0">
           <img
             src={logoImg}
             alt="Atulya Remedies Pvt Ltd"
             className="h-10 md:h-14 w-auto object-contain"
           />
+          <span className="hidden sm:block text-[8px] md:text-[10px] text-muted-foreground font-medium italic -mt-1 ml-1 leading-none tracking-tight">
+            "Medicine is our business, Your health is our mission"
+          </span>
         </Link>
 
         {/* Desktop nav */}

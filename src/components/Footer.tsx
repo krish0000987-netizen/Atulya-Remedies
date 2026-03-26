@@ -15,7 +15,10 @@ const Footer = () => (
     <div className="container py-12 md:py-16">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <div>
-          <img src={logoImg} alt="Atulya Remedies Pvt Ltd" className="h-14 w-auto mb-2" />
+          <img src={logoImg} alt="Atulya Remedies Pvt Ltd" className="h-14 w-auto mb-1" />
+          <p className="text-secondary text-[10px] font-medium italic mb-3 ml-1">
+            "Medicine is our business, Your health is our mission"
+          </p>
           <p className="text-primary-foreground/70 text-sm leading-relaxed mb-4">
             WHO-GMP & ISO 9001:2015 certified pharmaceutical company providing quality healthcare products across India.
           </p>
@@ -58,7 +61,7 @@ const Footer = () => (
           <div className="flex flex-col gap-3 text-sm text-primary-foreground/70">
             <a href="tel:+917697555159" className="flex items-start gap-2 hover:text-secondary transition-colors">
               <Phone className="w-4 h-4 mt-0.5 shrink-0" />
-              +91 76975 55159 (Primary)
+              +91 76975 55159 
             </a>
             <a href="tel:+918878036772" className="flex items-start gap-2 hover:text-secondary transition-colors">
               <Phone className="w-4 h-4 mt-0.5 shrink-0" />
