@@ -20,14 +20,10 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-md border-b border-border">
       <div className="container flex items-center justify-between h-16 md:h-20">
         <Link to="/" className="flex items-center gap-2">
-          <video
-            src="/logo-animated.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
+          <img
+            src={logoImg}
+            alt="Atulya Remedies Pvt Ltd"
             className="h-10 md:h-14 w-auto object-contain"
-            aria-label="Atulya Remedies Pvt Ltd"
           />
         </Link>
 
