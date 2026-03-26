@@ -60,17 +60,33 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     );
 
+    // CRITICAL SAFETY TIMEOUT:
+    // If Supabase takes too long to initialize (e.g. network/env issues),
+    // force stop the loading state after 5 seconds so the app doesn't stay stuck.
+    const timeoutId = setTimeout(() => {
+      setLoading(false);
+      console.warn("Auth initialization timed out. Proceeding anyway.");
+    }, 5000);
+
     // Then get the initial session
     supabase.auth.getSession().then(async ({ data: { session } }) => {
+      clearTimeout(timeoutId);
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
         await checkAdmin(session.user.id);
       }
       setLoading(false);
+    }).catch(err => {
+      clearTimeout(timeoutId);
+      console.error("Session check error:", err);
+      setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(timeoutId);
+    };
   }, [checkAdmin]);
 
   const signIn = useCallback(async (email: string, password: string) => {
