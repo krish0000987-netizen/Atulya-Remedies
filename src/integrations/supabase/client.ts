@@ -12,10 +12,13 @@ if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_PUBLISH
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
+// Use standard localStorage or disable persistence for dev stability
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
+    persistSession: false, // Disable to prevent "lock theft" in dev
     storage: localStorage,
-    persistSession: true,
     autoRefreshToken: true,
   }
 });
+
+console.log("🔌 Initialized Supabase with URL:", SUPABASE_URL.startsWith('https://placeholder') ? "INVALID ❌" : "VALID ✅");

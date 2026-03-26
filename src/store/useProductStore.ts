@@ -40,7 +40,7 @@ export const useProductStore = create<ProductState>((set, get) => ({
   errorMessage: null,
 
   fetchProducts: async (force = false) => {
-    if (get().isLoading) return;
+    if (!force && get().isLoading) return;
     if (!force && get().products.length > 0) return;
 
     set({ isLoading: true, isError: false, errorMessage: null });
