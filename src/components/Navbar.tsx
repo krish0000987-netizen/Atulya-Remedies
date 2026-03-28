@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logoImg from "@/assets/logo.png";
 
 const navLinks = [
   { label: "Home", to: "/" },
@@ -21,9 +20,13 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-md border-b border-border">
       <div className="container flex items-center justify-between h-16 md:h-20">
         <Link to="/" className="flex flex-col items-start group">
-          <img
-            src={logoImg}
-            alt="Atulya Remedies Pvt Ltd"
+          <video
+            src="/logo-animated.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            title="Atulya Remedies Pvt Ltd"
             className="h-10 md:h-14 w-auto object-contain transition-transform group-hover:scale-[1.02] dark:invert"
           />
           <div className="w-full max-w-[120px] md:max-w-[170px] mt-0.5 ml-1">

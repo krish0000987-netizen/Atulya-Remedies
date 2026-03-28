@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Phone, MapPin, Mail, Facebook, Instagram, Youtube } from "lucide-react";
-import logoImg from "@/assets/logo.png";
 
 const socialLinks = [
   { label: "Facebook", href: "https://www.facebook.com/atulya.remedies", icon: Facebook },
@@ -16,7 +15,15 @@ const Footer = () => (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <div>
           <div className="flex flex-col items-start mb-4">
-            <img src={logoImg} alt="Atulya Remedies Pvt Ltd" className="h-14 w-auto mb-1 brightness-0 invert" />
+            <video
+              src="/logo-animated.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              title="Atulya Remedies Pvt Ltd"
+              className="h-14 w-auto mb-1 brightness-0 invert"
+            />
             <div className="w-full max-w-[200px] mt-1 ml-1 pt-1 border-t border-secondary/20">
               <p className="text-secondary text-[10px] font-semibold italic">
                 "Medicine is our business, Your health is our mission"

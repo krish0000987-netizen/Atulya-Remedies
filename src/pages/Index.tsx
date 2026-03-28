@@ -11,6 +11,7 @@ import { useSiteStore } from "@/store/useSiteStore";
 import { useProductStore } from "@/store/useProductStore";
 import heroImg from "@/assets/hero-pharma.jpg";
 import GallerySection from "@/components/GallerySection";
+import dermIcon from "@/assets/dermatology-icon.png";
 
 const defaultWhyUs = [
   { title: "WHO-GMP Certified", desc: "Products meeting strict international quality standards." },
@@ -19,8 +20,17 @@ const defaultWhyUs = [
   { title: "Quality Assured", desc: "Every product undergoes rigorous quality testing." },
 ];
 
+const CustomDermIcon = ({ size, className }: { size?: number | string, className?: string }) => (
+  <img 
+    src={dermIcon} 
+    alt="Dermatology" 
+    style={{ width: size, height: size }} 
+    className={`object-contain ${className || ""}`} 
+  />
+);
+
 const categories = [
-  { name: "Dermatologist & Cosmetologist", icon: HeartPulse, color: "text-red-500", bg: "bg-red-500/10" },
+  { name: "Dermatologist & Cosmetologist", icon: CustomDermIcon, color: "", bg: "bg-red-500/10" },
   { name: "Antibiotics & Anti-infectives", icon: Beaker, color: "text-blue-500", bg: "bg-blue-500/10" },
   { name: "Nutraceuticals", icon: Zap, color: "text-yellow-500", bg: "bg-yellow-500/10" },
   { name: "Analgesics & NSAIDs", icon: Activity, color: "text-green-500", bg: "bg-green-500/10" },
