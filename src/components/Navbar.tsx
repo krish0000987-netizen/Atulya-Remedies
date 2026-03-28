@@ -24,7 +24,7 @@ const Navbar = () => {
           <img
             src={logoImg}
             alt="Atulya Remedies Pvt Ltd"
-            className="h-10 md:h-14 w-auto object-contain transition-transform group-hover:scale-[1.02]"
+            className="h-10 md:h-14 w-auto object-contain transition-transform group-hover:scale-[1.02] dark:invert"
           />
           <div className="w-full max-w-[120px] md:max-w-[170px] mt-0.5 ml-1">
             <div className="h-px bg-secondary/30 w-full mb-1" />

@@ -16,7 +16,7 @@ const Footer = () => (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <div>
           <div className="flex flex-col items-start mb-4">
-            <img src={logoImg} alt="Atulya Remedies Pvt Ltd" className="h-14 w-auto mb-1" />
+            <img src={logoImg} alt="Atulya Remedies Pvt Ltd" className="h-14 w-auto mb-1 brightness-0 invert" />
             <div className="w-full max-w-[200px] mt-1 ml-1 pt-1 border-t border-secondary/20">
               <p className="text-secondary text-[10px] font-semibold italic">
                 "Medicine is our business, Your health is our mission"
