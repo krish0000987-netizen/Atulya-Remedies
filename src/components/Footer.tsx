@@ -18,7 +18,7 @@ const Footer = () => (
             <img
               src="/footer-logo.png"
               alt="Atulya Remedies Pvt Ltd"
-              className="h-14 w-auto mb-1 brightness-0 invert"
+              className="h-14 md:h-16 w-auto mb-2 bg-white rounded-lg p-1.5 object-contain shadow-sm"
             />
             <div className="w-full max-w-[200px] mt-1 ml-1 pt-1 border-t border-secondary/20">
               <p className="text-secondary text-[10px] font-semibold italic">

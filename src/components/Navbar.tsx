@@ -31,9 +31,9 @@ const Navbar = () => {
           />
           <div className="w-full max-w-[120px] md:max-w-[170px] mt-0.5 ml-1">
             <div className="h-px bg-secondary/30 w-full mb-1" />
-            <span className="hidden sm:block text-[7px] md:text-[9px] text-muted-foreground font-semibold italic leading-none tracking-tight">
+            {/* <span className="hidden sm:block text-[7px] md:text-[9px] text-muted-foreground font-semibold italic leading-none tracking-tight">
               "Medicine is our business, Your health is our mission"
-            </span>
+            </span> */}
           </div>
         </Link>
 
